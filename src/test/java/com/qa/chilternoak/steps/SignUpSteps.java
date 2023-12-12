@@ -9,14 +9,16 @@ import org.apache.poi.EncryptedDocumentException;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.testng.Assert;
-
+import org.testng.asserts.SoftAssert;
 
 import com.qa.chilternoak.pageObjects.SignUpPageObjects;
 import com.qa.chilternoak.utilities.XLS_DataProvider;
 
 
 public class SignUpSteps {
-
+	
+	SoftAssert Assert = new SoftAssert();
+	
 	static String email;
 
 //	SignupHooks hob = new SignupHooks();
@@ -50,9 +52,7 @@ public class SignUpSteps {
 		String Expected_URL = "https://www.chilternoakfurniture.co.uk/account/register";
 		String Actual_URL = sob.validate_CurrentURL();
 		
-		Assert.assertEquals(Actual_URL, Expected_URL);
-		
-		
+		Assert.assertEquals(Actual_URL, Expected_URL);	
 	}
 	
 	@When("User enters firstName lastName email password")
@@ -69,8 +69,7 @@ public class SignUpSteps {
 			
 			sob.enterData(fname, lname, email, pass);
 			
-			Thread.sleep(1000);
-			
+			Thread.sleep(1000);	
 		}
 //		sob.enterData("Ram", "ram", "Admin586@gmail.com", "546987");
 	}
@@ -89,11 +88,17 @@ public class SignUpSteps {
 		
 //		String Actual_mail = sob.validate_Email();
 //		String Expected_mail = email;
-//		
 //		Assert.assertEquals(Actual_mail, Expected_mail);
 		
+		try{
+			sob.signOut();
+		}
+		catch(Exception e) {
+			
+			Assert.fail("Signout is not present");
+		}
 		
-		
+		Assert.assertAll();
 	}
-		
+			
 }
