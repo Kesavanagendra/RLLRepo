@@ -38,6 +38,9 @@ public class SignUpPageObjects extends SignupHooks {
 	@FindBy(xpath = "//div[@id = 'customer_sidebar']/descendant::p")
 	WebElement emailtext;
 	
+	@FindBy(xpath = "//a[@class = 'more-link']")
+	WebElement signout;
+	
 	
 	public SignUpPageObjects(WebDriver driver) {
 		
@@ -87,6 +90,11 @@ public class SignUpPageObjects extends SignupHooks {
 		Thread.sleep(2000);
 		return emailtext.getText();
 		
+	}
+	
+	public void signOut() {
+		
+		signout.click();
 	}
 	
 	public boolean validationDemo(String s1 , String s2) {
