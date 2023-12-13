@@ -20,6 +20,7 @@ public class SignupHooks {
 		
 		driver = new ChromeDriver();
 		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
 		driver.get("https://www.chilternoakfurniture.co.uk/");
 	}
 	
