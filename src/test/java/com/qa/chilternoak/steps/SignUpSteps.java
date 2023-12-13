@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.EncryptedDocumentException;
-
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.testng.Assert;
+
+import org.apache.poi.EncryptedDocumentException;
 import org.testng.asserts.SoftAssert;
 
 import com.qa.chilternoak.pageObjects.SignUpPageObjects;
@@ -20,19 +19,8 @@ public class SignUpSteps {
 	SoftAssert Assert = new SoftAssert();
 	
 	static String email;
-
-//	SignupHooks hob = new SignupHooks();
 	SignUpPageObjects sob = new SignUpPageObjects(SignupHooks.driver);
-	
-	
-//	@Given("User open the Chilternoak application")
-//	public void user_open_the_chilternoak_application() {
-//	   
-//		driver = new ChromeDriver();
-//		driver.manage().window().maximize();
-//		driver.get("https://www.chilternoakfurniture.co.uk/");
-//	}
-	
+		
 	@When("User click on Admin logo")
 	public void user_click_on_admin_logo() {
 	    
@@ -55,50 +43,66 @@ public class SignUpSteps {
 		Assert.assertEquals(Actual_URL, Expected_URL);	
 	}
 	
-	@When("User enters firstName lastName email password")
-	public void user_enters_first_name_last_name_email_password() throws EncryptedDocumentException, IOException, InterruptedException {
+	@When("User enters data from {string} and {int}")
+	public void user_enters_data_from_and(String SheetName, Integer RowNumber) throws EncryptedDocumentException, IOException, InterruptedException {
 	    
-		List<Map<String,String>> testdata = XLS_DataProvider.getTestData("sheet1");
+		List<Map<String,String>> testdata = XLS_DataProvider.getTestData(SheetName);
 		
-		for(Map<String , String>e : testdata) {
-			
-			String fname =String.valueOf(e.get("Firstname"));
-			String lname =String.valueOf(e.get("Lastname"));
-			email =String.valueOf(e.get("Email"));
-			String pass =String.valueOf(e.get("Password"));
-			
-			sob.enterData(fname, lname, email, pass);
-			
-			Thread.sleep(1000);	
-		}
-//		sob.enterData("Ram", "ram", "Admin586@gmail.com", "546987");
+		String fname = testdata.get(RowNumber).get("Firstname");
+		String lname = testdata.get(RowNumber).get("Lastname");
+		email = testdata.get(RowNumber).get("Email");
+		String pass = testdata.get(RowNumber).get("Password");
+		
+		sob.enterData(fname, lname, email, pass);
+		Thread.sleep(1000);	
 	}
 	
 	@Then("User click on create account")
-	public void user_click_on_create_account() throws InterruptedException {
-	   
-		sob.clickCreateBtn();
-		Thread.sleep(120000);
-		
+	public void user_click_on_create_account() throws InterruptedException, IOException {
+	   	
 		Assert.assertEquals(true,sob.validate_createBtn());
 		
-		boolean val = sob.validationDemo(email, sob.validate_Email());
-			
-		Assert.assertEquals(true, val);
-		
-//		String Actual_mail = sob.validate_Email();
-//		String Expected_mail = email;
-//		Assert.assertEquals(Actual_mail, Expected_mail);
-		
 		try{
+			
+			sob.clickCreateBtn();
+			Thread.sleep(120000);
+			
+			boolean val = sob.validationDemo(email, sob.validate_Email());	
+			Assert.assertEquals(true, val);
+				
 			sob.signOut();
 		}
 		catch(Exception e) {
 			
 			Assert.fail("Signout is not present");
 		}
+		Assert.assertAll();
 		
+		/*String Actual_mail = sob.validate_Email();
+		String Expected_mail = email;
+		Assert.assertEquals(Actual_mail, Expected_mail);*/
+	}
+	
+	
+	@Then("User try to click on create account")
+	public void user_try_to_click_on_create_account() throws InterruptedException, IOException {
+	   	
+		Assert.assertEquals(true,sob.validate_createBtn());
+		
+		try{
+			
+			sob.clickCreateBtn();
+			
+			boolean val = sob.validationDemo(email, sob.validate_Email());	
+			Assert.assertEquals(true, val);
+				
+			sob.signOut();
+		}
+		catch(Exception e) {
+			
+			Assert.fail("Signout is not present");
+		}
 		Assert.assertAll();
 	}
-			
+	
 }
