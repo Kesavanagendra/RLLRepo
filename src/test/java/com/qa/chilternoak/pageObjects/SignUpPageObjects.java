@@ -1,6 +1,5 @@
 package com.qa.chilternoak.pageObjects;
 
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,7 +28,7 @@ public class SignUpPageObjects extends SignupHooks {
 	@FindBy(xpath = "//input[@id = 'password']")
 	WebElement password;
 		
-	@FindBy(xpath = "(//input[@type = 'submit'])[1]")     //input[@class = 'btn']
+	@FindBy(xpath = "(//input[@type = 'submit'])[1]")     
 	WebElement createbtn;
 	
 	@FindBy(xpath = "//a[@class = 'toolbar-account']")
@@ -51,8 +50,6 @@ public class SignUpPageObjects extends SignupHooks {
 	public void clickAccount() {
 		
 		Account.click();
-		
-		
 	}
 	
 	public void clickSignupLink() {
@@ -65,11 +62,10 @@ public class SignUpPageObjects extends SignupHooks {
 		fname.sendKeys(user1);
 		lname.sendKeys(user2);
 		email.sendKeys(user3);
-		password.sendKeys(user4);
-		
+		password.sendKeys(user4);	
 	}
 	
-	public void clickCreateBtn() {
+	public void clickCreateBtn() throws InterruptedException  {
 		
 		createbtn.click();
 	}
@@ -88,8 +84,7 @@ public class SignUpPageObjects extends SignupHooks {
 		
 		clickAccount();
 		Thread.sleep(2000);
-		return emailtext.getText();
-		
+		return emailtext.getText();	
 	}
 	
 	public void signOut() {
@@ -105,7 +100,6 @@ public class SignUpPageObjects extends SignupHooks {
 		return false;
 		
 	}
-		
 	
 }
 
